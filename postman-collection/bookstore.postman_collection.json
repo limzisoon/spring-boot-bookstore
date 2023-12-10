@@ -1,0 +1,82 @@
+{
+	"info": {
+		"_postman_id": "a7ea0d05-4655-4b40-81c8-7722847637ed",
+		"name": "bookstore",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "12839116"
+	},
+	"item": [
+		{
+			"name": "find all books",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "http://localhost:8080/books"
+			},
+			"response": []
+		},
+		{
+			"name": "add Book",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"isbn\":\"00005\",\r\n    \"title\":\"The Hobbit\",\r\n    \"authors\":[\"Tolkien\"],\r\n    \"year\":1937,\r\n    \"price\":50.50,\r\n    \"genre\":\"Fantasy\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:8080/addBook"
+			},
+			"response": []
+		},
+		{
+			"name": "update Book",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"isbn\":\"00005\",\r\n    \"title\":\"The Hobbit\",\r\n    \"authors\":[\"Tolkien\",\"Agatha Christie\"],\r\n    \"year\":1940,\r\n    \"price\":50.50,\r\n    \"genre\":\"Fantasy\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:8080/updateBook/00005"
+			},
+			"response": []
+		},
+		{
+			"name": "delete book",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": "http://localhost:8080/book/00005"
+			},
+			"response": []
+		},
+		{
+			"name": "find books by title and author",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"title\":\"The Young Guard\",\r\n    \"author\":\"Alexander\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:8080/books"
+			},
+			"response": []
+		}
+	]
+}
