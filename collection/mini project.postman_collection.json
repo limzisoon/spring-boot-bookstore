@@ -1,0 +1,121 @@
+{
+	"info": {
+		"_postman_id": "ac9ad5b1-67ac-4ad4-b89f-23864ccde7bf",
+		"name": "mini project",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "12839116"
+	},
+	"item": [
+		{
+			"name": "get restaurants",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "http://localhost:8080/restaurants"
+			},
+			"response": []
+		},
+		{
+			"name": "initial lunch",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{   \r\n    \"description\":\"lunch planning for 2023 Nov 22 2pm\",\r\n    \"createdBy\":\"Zi Soon\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:8080/init-lunch"
+			},
+			"response": []
+		},
+		{
+			"name": "add member",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\":\"MR D\",\r\n    \"lunchId\":40,\r\n    \"restaurantCd\":\"R004\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:8080/add-member"
+			},
+			"response": []
+		},
+		{
+			"name": "remove member",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:8080/remove-member/38"
+			},
+			"response": []
+		},
+		{
+			"name": "get all members and restaurant by lunch ID",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \r\n\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:8080/members/36"
+			},
+			"response": []
+		},
+		{
+			"name": "Get lunch with Member Info",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "http://localhost:8080/lunch/40"
+			},
+			"response": []
+		},
+		{
+			"name": "end lunch",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{   \r\n    \"id\":39,\r\n    \"description\":\"lunch planning for 2023 Nov 22 12pm\",\r\n    \"createdBy\":\"Zi Soon\",\r\n    \"members\":[\r\n    {\"name\":\"Alice\",\"restaurantCd\":\"R001\"},\r\n    {\"name\":\"Ben\",\"restaurantCd\":\"R002\"},\r\n    {\"name\":\"Carmen\",\"restaurantCd\":\"R003\"},\r\n    {\"name\":\"David\",\"restaurantCd\":\"R004\"},\r\n    {\"name\":\"Emily\",\"restaurantCd\":\"R005\"}\r\n    ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:8080/end-lunch"
+			},
+			"response": []
+		}
+	]
+}
