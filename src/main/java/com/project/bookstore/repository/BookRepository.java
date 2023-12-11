@@ -17,6 +17,6 @@ public interface BookRepository extends JpaRepository<Book, String> {
 
     Optional<Book> getByIsbn(String isbn);
 
-   @Query(value = "SELECT * FROM book b where b.title =:title and :author = any(authors) ", nativeQuery = true)
+   @Query(value = "SELECT * FROM book b where b.title like :title and :author = any(authors) ", nativeQuery = true)
    List<Book> findBooksByTitleAndAuthor(String title,String author);
 }

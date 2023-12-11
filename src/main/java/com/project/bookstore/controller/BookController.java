@@ -12,8 +12,10 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -28,7 +30,7 @@ public class BookController {
     @PostMapping(value = "/addBook", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     @Operation(method = "POST", description = "add book",summary = "add book into bookstore")
-    public ResponseEntity<BookResponseDTO> addBook(@RequestBody BookRequestDTO bookRequestDTO) {
+    public ResponseEntity<BookResponseDTO> addBook(@Valid @RequestBody BookRequestDTO bookRequestDTO) {
         BookResponseDTO bookResponseDTO = new BookResponseDTO();
         HttpHeaders header = new HttpHeaders();
 
@@ -41,12 +43,10 @@ public class BookController {
                 return new ResponseEntity<>(bookResponseDTO, header,HttpStatus.BAD_REQUEST);
             }
 
-            Book newBook = Book.builder().build();
-            BeanUtils.copyProperties(bookRequestDTO, newBook);
-            Optional<Book> bookDb = bookService.createBook(newBook);
+            Optional<Book> createdBook = bookService.createBook(bookRequestDTO);
 
-            if (bookDb.isPresent()) {
-                BeanUtils.copyProperties(bookDb.get(), bookResponseDTO);
+            if (createdBook.isPresent()) {
+                BeanUtils.copyProperties(createdBook.get(), bookResponseDTO);
             }
 
             return new ResponseEntity<>(bookResponseDTO, HttpStatus.CREATED);
@@ -61,22 +61,20 @@ public class BookController {
     @PostMapping(value = "/updateBook/{isbn}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     @Operation(method = "POST", description = "update book",summary = "update book detail")
-    public ResponseEntity<BookResponseDTO> updateBook(@PathVariable String isbn, @RequestBody BookRequestDTO bookRequestDTO) {
+    public ResponseEntity<BookResponseDTO> updateBook(@PathVariable String isbn, @Valid @RequestBody BookRequestDTO bookRequestDTO) {
         HttpHeaders header = new HttpHeaders();
         BookResponseDTO bookResponseDTO = new BookResponseDTO();
 
         try {
             //load from db
-            Optional<Book> bookDb = bookService.getBook(isbn);
-            if (!bookDb.isPresent()) {
+            Optional<Book> book = bookService.getBook(isbn);
+            if (!book.isPresent()) {
                 System.out.println(CommonConstant.BUSINESS_ERROR_2);
                 header.add("error",CommonConstant.BUSINESS_ERROR_2);
                 return new ResponseEntity<>(bookResponseDTO, header,HttpStatus.BAD_REQUEST);
             }
 
-            //dto set to entity
-            BeanUtils.copyProperties(bookRequestDTO, bookDb.get());
-            Optional<Book> updatedBook = bookService.updateBook(bookDb.get());
+            Optional<Book> updatedBook = bookService.updateBook(bookRequestDTO);
 
             if (updatedBook.isPresent()) {
                 BeanUtils.copyProperties(updatedBook.get(), bookResponseDTO);
@@ -91,20 +89,21 @@ public class BookController {
         }
     }
 
-    //@PreAuthorize("hasRole('ROLE_USER')")
+    @PreAuthorize("hasRole('ROLE_USER')")
+    @ResponseStatus(HttpStatus.OK)
     @DeleteMapping("/book/{isbn}")
     public ResponseEntity<HttpStatus> deleteBook(@PathVariable("isbn") String isbn) {
         HttpHeaders header = new HttpHeaders();
         try {
-            Optional<Book> bookD = bookService.getBook(isbn);
-            if (bookD.isEmpty()) {
+            Optional<Book> book = bookService.getBook(isbn);
+            if (!book.isPresent()) {
                 System.out.println(CommonConstant.BUSINESS_ERROR_3);
                 header.add("error",CommonConstant.BUSINESS_ERROR_3);
                 return new ResponseEntity<>(null, header,HttpStatus.BAD_REQUEST);
             }
 
             bookService.deleteBook(isbn);
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            return new ResponseEntity<>(HttpStatus.OK);
 
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -125,7 +124,6 @@ public class BookController {
             {
                 BookResponseDTO dto = new BookResponseDTO();
                 BeanUtils.copyProperties(b, dto);
-                System.out.println(dto.toString());
                 responseDtoList.add(dto);
             }
             return new ResponseEntity<>(responseDtoList, HttpStatus.OK);

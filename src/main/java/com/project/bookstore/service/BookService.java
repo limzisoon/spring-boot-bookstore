@@ -5,6 +5,7 @@ import com.project.bookstore.payload.request.BookRequestDTO;
 import com.project.bookstore.repository.BookRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,14 +25,14 @@ public class BookService {
      *
      * @param book
      */
-    public Optional<Book> createBook(Book book) throws Exception
+    public Optional<Book> createBook(BookRequestDTO bookRequestDTO) throws Exception
     {
+        Book book = Book.builder().build();
+        BeanUtils.copyProperties(bookRequestDTO, book);
         System.out.println("createBook : " + book.toString());
         bookRepository.save(book);
 
-        Optional<Book> bookDb = getBook(book.getIsbn());
-
-        return bookDb;
+        return getBook(book.getIsbn());
     }
 
     /**
@@ -48,15 +49,16 @@ public class BookService {
     /**
      * This method update book information
      *
-     * @param book
+     * @param bookRequestDTO
      */
-    public Optional<Book> updateBook(Book book) throws Exception
+    public Optional<Book> updateBook(BookRequestDTO bookRequestDTO) throws Exception
     {
+        Book book = Book.builder().build();
+        BeanUtils.copyProperties(bookRequestDTO, book);
+        System.out.println("updateBook : " + book.toString());
         bookRepository.save(book);
 
-        Optional<Book> bookDb = getBook(book.getIsbn());
-
-        return bookDb;
+        return getBook(book.getIsbn());
     }
 
     /**
@@ -76,9 +78,9 @@ public class BookService {
      */
     public List<Book> findBooksByTitleAndAuthor(BookRequestDTO bookRequestDTO) throws Exception
     {
-        System.out.println("bookRequestDTO.getTitle() : " + bookRequestDTO.getTitle());
-        System.out.println("bookRequestDTO.getAuthor() : " + bookRequestDTO.getAuthor());
-        return bookRepository.findBooksByTitleAndAuthor(bookRequestDTO.getTitle(),bookRequestDTO.getAuthor());
+        String title = bookRequestDTO.getTitle()!=null||bookRequestDTO.getTitle()!=""?bookRequestDTO.getTitle():"%";
+        String author = bookRequestDTO.getAuthor();
+        return bookRepository.findBooksByTitleAndAuthor(title,author);
     }
 
     /**

@@ -17,6 +17,7 @@ public class BookRequestDTO {
 
     @NotNull
     private String isbn;
+
     private String title;
     private String author;
     private String[] authors;
