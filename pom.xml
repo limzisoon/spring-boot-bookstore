@@ -62,7 +62,6 @@
 			<artifactId>lombok</artifactId>
 			<scope>provided</scope>
 		</dependency>
-		<!-- https://mvnrepository.com/artifact/javax.validation/validation-api -->
 		<dependency>
 			<groupId>javax.validation</groupId>
 			<artifactId>validation-api</artifactId>
@@ -73,13 +72,6 @@
 			<artifactId>swagger-annotations</artifactId>
 			<version>2.2.2</version>
 		</dependency>
-		<!--
-		<dependency>
-			<groupId>io.hypersistence</groupId>
-			<artifactId>hypersistence-utils-hibernate-55</artifactId>
-			<version>3.6.1</version>
-		</dependency>
-		-->
 		<dependency>
 			<groupId>com.vladmihalcea</groupId>
 			<artifactId>hibernate-types-52</artifactId>
